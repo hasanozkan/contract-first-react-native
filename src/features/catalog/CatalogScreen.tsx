@@ -32,6 +32,8 @@ export function CatalogScreen() {
         placeholder="Search title, author or ISBN"
         placeholderTextColor={colors.muted}
         returnKeyType="search"
+        autoCapitalize="none"
+        autoCorrect={false}
         style={styles.input}
         testID="search-input"
       />

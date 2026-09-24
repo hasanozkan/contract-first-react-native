@@ -7,6 +7,15 @@ A React Native (Expo) app for the library services in this set: search the
 catalog and borrow a copy, or ask the AI assistant — and **confirm every
 change on the same card**, whether you asked for it or the assistant proposed it.
 
+<p align="center">
+  <img src="docs/screenshots/1-borrow-confirm.png" width="250" alt="Borrowing from the catalog: the confirmation card" />
+  <img src="docs/screenshots/2-borrowed.png" width="250" alt="Borrowed: availability follows the loan" />
+  <img src="docs/screenshots/3-injection-warning.png" width="250" alt="An injected instruction arrives as a warned card" />
+</p>
+<p align="center"><sub>Live mode on iOS against the Python library API and the assistant API. Right: a book title
+carrying “ignore all previous instructions…” made the assistant propose a loan for <code>m_attacker</code> —
+it arrives as a warned card and runs only if the person confirms.</sub></p>
+
 It exists to show three things a mobile client in a multi-service system
 needs, and how to make each one fail loudly:
 

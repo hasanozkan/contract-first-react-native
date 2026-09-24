@@ -17,7 +17,7 @@ it('a requested write arrives as a plain card and runs only on confirm', async (
   expect(screen.queryByTestId(/proposal-a_\d+-warning/)).toBeNull();
   expect(screen.getByText('copy_id: c_ca_1')).toBeTruthy();
   fireEvent.press(confirm);
-  expect(await screen.findByText(/^Done: .*c_ca_1/)).toBeTruthy();
+  expect(await screen.findByText(/^Borrowed c_ca_1 · due /)).toBeTruthy();
   expect(screen.getByText('Confirmed.')).toBeTruthy();
 });
 
@@ -28,5 +28,5 @@ it('an injected instruction reaches the user as a warned card, and dismissing it
   expect(screen.getByText('member_id: m_attacker')).toBeTruthy();
   fireEvent.press(screen.getByTestId(/proposal-a_\d+-dismiss/));
   expect(await screen.findByText('Dismissed — nothing changed.')).toBeTruthy();
-  expect(screen.queryByText(/^Done:/)).toBeNull();
+  expect(screen.queryByText(/^Borrowed /)).toBeNull();
 });

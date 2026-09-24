@@ -15,6 +15,16 @@ type Entry =
   | { kind: 'user' | 'assistant' | 'system'; id: string; text: string }
   | { kind: 'proposal'; id: string; action: Pending; state: 'open' | 'done' | 'dismissed' };
 
+/** The service returns the tool's result as data; say it in words. */
+export function describe(outcome: Record<string, unknown>): string {
+  if (typeof outcome.error === 'string') return `Refused: ${outcome.error}`;
+  if (typeof outcome.copy_id === 'string' && typeof outcome.due_on === 'string') {
+    return `Borrowed ${outcome.copy_id} · due ${outcome.due_on}`;
+  }
+  if (typeof outcome.late_fee_cents === 'number') return `Returned · late fee ${(outcome.late_fee_cents / 100).toFixed(2)}`;
+  return 'Done.';
+}
+
 let n = 0;
 const key = () => `e${++n}`;
 
@@ -58,7 +68,7 @@ export function AssistantScreen() {
     onSuccess: (done) =>
       setEntries((e) => [
         ...e.map((x) => (x.kind === 'proposal' && x.action.action_id === done.action_id ? { ...x, state: 'done' as const } : x)),
-        { kind: 'system', id: key(), text: `Done: ${JSON.stringify(done.outcome)}` },
+        { kind: 'system', id: key(), text: describe(done.outcome) },
       ]),
   });
 
