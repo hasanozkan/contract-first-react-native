@@ -1,0 +1,26 @@
+# Dependencies update themselves: weekly, grouped. Expo pins its own set, so
+# SDK upgrades are done deliberately with `npx expo install --fix`, not here.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: monday
+    ignore:
+      - dependency-name: "expo*"
+      - dependency-name: "react-native*"
+      - dependency-name: "@react-native/*"
+      - dependency-name: "react"
+      - dependency-name: "react-dom"
+    groups:
+      all:
+        patterns: ["*"]
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: monday
+    groups:
+      all:
+        patterns: ["*"]

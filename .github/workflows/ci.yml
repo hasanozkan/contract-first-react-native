@@ -1,0 +1,65 @@
+name: ci
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  # Lint, strict types, screen tests on typed mocks, and the contract gate:
+  # the generated types must match what both services publish today.
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+
+  # The same generated clients against the real services, started from their
+  # own repositories: the Python library API and the assistant API.
+  live:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: hasanozkan/spec-driven-ddd-python
+          path: svc/library
+      - uses: actions/checkout@v4
+        with:
+          repository: hasanozkan/llm-tool-calling-assistant
+          path: svc/assistant
+      - uses: astral-sh/setup-uv@v6
+      - name: Start services
+        run: |
+          (cd svc/library && uv sync --locked -q && uv run uvicorn library.app:app --port 8000 &)
+          (cd svc/assistant && uv sync --locked -q && uv run uvicorn assistant.http:app --port 8001 &)
+          timeout 120 bash -c 'until curl -fs localhost:8000/healthz && curl -fs localhost:8001/healthz; do sleep 2; done'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run test:live
+        env:
+          EXPO_PUBLIC_LIBRARY_URL: http://localhost:8000
+          EXPO_PUBLIC_ASSISTANT_URL: http://localhost:8001
+
+  secrets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
