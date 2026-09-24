@@ -49,6 +49,10 @@
     "testPathIgnorePatterns": [
       "/node_modules/",
       "live\\.test\\.ts$"
-    ]
+    ],
+    "setupFilesAfterEnv": [
+      "<rootDir>/jest.setup.ts"
+    ],
+    "testTimeout": 20000
   }
 }
