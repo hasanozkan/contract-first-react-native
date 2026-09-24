@@ -13,6 +13,20 @@ updates:
       - dependency-name: "@react-native/*"
       - dependency-name: "react"
       - dependency-name: "react-dom"
+      # The test/lint/TS toolchain moves with the Expo SDK, not on its own:
+      # jest-expo 57 is on jest 29, and RNTL 14 needs a different renderer.
+      - dependency-name: "jest"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@types/jest"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@testing-library/react-native"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "react-test-renderer"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "typescript"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "eslint"
+        update-types: ["version-update:semver-major"]
     groups:
       all:
         patterns: ["*"]
