@@ -1,6 +1,6 @@
-# Library mobile — a contract-first Expo client
+# Contract-first React Native — an Expo client for AI and domain services
 
-[![ci](https://github.com/hasanozkan/library-mobile/actions/workflows/ci.yml/badge.svg)](https://github.com/hasanozkan/library-mobile/actions/workflows/ci.yml)
+[![ci](https://github.com/hasanozkan/contract-first-react-native/actions/workflows/ci.yml/badge.svg)](https://github.com/hasanozkan/contract-first-react-native/actions/workflows/ci.yml)
 ![Expo](https://img.shields.io/badge/Expo-SDK%2057-000020) ![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6) ![license](https://img.shields.io/badge/license-MIT-green)
 
 A React Native (Expo) app for the library services in this set: search the
