@@ -38,7 +38,11 @@ jobs:
         with:
           repository: hasanozkan/llm-tool-calling-assistant
           path: svc/assistant
+      # No uv cache here: the services keep running until the job ends and hold
+      # its lock, so the post-job cache save would time out.
       - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: false
       - name: Start services
         run: |
           (cd svc/library && uv sync --locked -q && uv run uvicorn library.app:app --port 8000 &)
